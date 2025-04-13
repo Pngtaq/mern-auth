@@ -1,16 +1,16 @@
-import userModel from "../models/userModel";
+import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
-
-  if (!name || !email || password) {
+  console.log(req.body);
+  if (!name || !email || !password) {
     return res.json({ success: false, message: "Missing Details" });
   }
 
   try {
-    const existingUser = userModel.findOne({ email });
+    const existingUser = await userModel.findOne({ email });
 
     if (existingUser) {
       return res.json({ success: false, message: "User already exists" });

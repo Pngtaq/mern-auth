@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/mongodb.js";
+import authRouter from "./routes/authRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -16,6 +17,8 @@ app.use(cors({ credentials: true }));
 app.get("/", (req, res) => {
   res.json({ message: "Hello from Express!" });
 });
+
+app.use("/api/auth", authRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
