@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import transporter from "../config/nodemailer.js";
+
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
   console.log(email);
@@ -58,7 +59,6 @@ export const register = async (req, res) => {
       `,
     };
 
-    console.log(process.env.SMTP_USER, process.env.SMTP_PASSWORD);
     await transporter.sendMail(mailOptions);
 
     return res.json({ success: true });
@@ -121,7 +121,7 @@ export const logout = async (req, res) => {
 
 export const sendVerifyOtp = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const { userId } = req.body;
     const user = await userModel.findById(userId);
     if (user.isAccountVerified) {
       return res.json({ success: false, message: "Account already verified" });
